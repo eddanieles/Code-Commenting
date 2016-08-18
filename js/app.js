@@ -30,7 +30,7 @@ jQuery(function ($) { //the same as $(document).ready
       $.post({
         url: this.baseUrl,
         headers: this.headers,
-        data: { todo: { todo: value } },
+        data: { todo: { todo: value } }, //format the server excepts the data being posted to look like
         success: function (response) {
           callback(response.data)
         }
@@ -60,7 +60,7 @@ jQuery(function ($) { //the same as $(document).ready
         }
       }); //updates items to the server
     }
-  };
+  }; //ajax object to use later
 
   var util = { //creates an object util
     uuid: function () {
@@ -83,7 +83,7 @@ jQuery(function ($) { //the same as $(document).ready
     }, //adds s to the end of the word if count is not equal to 1
     store: function (namespace, data) {
       if (arguments.length > 1) {
-        return localStorage.setItem(namespace, JSON.stringify(data));
+        return localStorage.setItem(namespace, JSON.stringify(data)); //localStorage way of storing items local to the browser
       }
       else {
         var store = localStorage.getItem(namespace);
@@ -94,12 +94,11 @@ jQuery(function ($) { //the same as $(document).ready
 
   var App = { //creates App object
     init: function () {
-      this.todos = util.store('todos-jquery'); //returns the value of the position of util
-      this.todoTemplate = Handlebars.compile($('#todo-template').html()); //grab the html of #todo-template
-      this.footerTemplate = Handlebars.compile($('#footer-template').html()); //grab the html of #footer-template
+      this.todos = util.store('todos-jquery'); //returns the localStorage of the 'todos-jquery' object
+      this.todoTemplate = Handlebars.compile($('#todo-template').html()); //inputs the html of #todo-template
+      this.footerTemplate = Handlebars.compile($('#footer-template').html()); //inputs the html of #footer-template
       this.bindEvents(); //executes the bind function
-      ajax.getJSON(this.integrateList.bind(this)); //using the integrateList method on this (init)
-
+      ajax.getJSON(this.integrateList.bind(this)); //reads out to the ajax.getJSON method
       var router = new Router({
         '/:filter': (filter) => this.renderFiltered(filter)
       })
@@ -115,7 +114,7 @@ jQuery(function ($) { //the same as $(document).ready
         .on('keyup', '.edit', e => this.editKeyup(e))
         .on('focusout', '.edit', e => this.update(e))
         .on('click', '.destroy', e => this.destroy(e));
-    }, //applying the keystrokes to the #todo-list
+    }, //event delegation 
     renderFiltered: function(filter){
       this.filter = filter;
       this.render();
