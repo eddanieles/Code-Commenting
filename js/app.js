@@ -233,12 +233,12 @@ jQuery(function ($) { //the same as $(document).ready
     update: function (e) {
       var el = e.target;
       var $el = $(el);
-      var val = $el.val().trim();
+      var val = $el.val().trim(); //removes whitespace of the value inputted
 
       if (!val) {
         this.destroy(e);
         return;
-      }
+      } //disables users from inputting a blank value
 
       if ($el.data('abort')) {
         $el.data('abort', false);
@@ -254,19 +254,19 @@ jQuery(function ($) { //the same as $(document).ready
       var todo = this.todos.splice(this.indexFromEl(e.target), 1)[0];
       ajax.destroy(todo);
       this.render();
-    },
+    }, //removes the To Do from the server
     notIntegrated: function (todo) {
       return !this.todos.map((todo) => todo.id).includes(todo.id);
-    },
+    }, //returns true or false if the ID is included
     integrate: function (id, title, completed) {
       this.todos.push({
         id: id,
         title: title,
         completed: completed || false
       });
-    },
+    }, //pushed the To Do object to the todos array
     integrateList: function (data) {
-      data.filter((todo) => this.notIntegrated(todo))
+      data.filter((todo) => this.notIntegrated(todo)) //returns an array of To Dos that aren't intergrated
           .forEach(todo => this.integrate(todo.id,
                                           todo.attributes.id,
                                           todo.attributes['is-complete']));
